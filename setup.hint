@@ -1,0 +1,5 @@
+category: Java
+requires: 
+sdesc: "Replacement for Java Sun JPEG library"
+ldesc: "Open-source replacement for com.sun.image.codec.jpeg package, 
+from IcedTea6."

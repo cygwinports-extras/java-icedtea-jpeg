@@ -1,0 +1,27 @@
+inherit java
+
+DESCRIPTION="Replacement for Sun Java's JPEG classes"
+
+SRC_URI="http://icedtea.classpath.org/hg/icedtea6/raw-file/tip/patches/icedtea-jpegclasses.patch"
+SRC_DIR=.
+
+CYGPORT_USE_UNSTABLE_API=1
+src_unpack_hook() {
+	rm -fr classes
+	patch -p4 < ${SRC_URI##*/}
+}
+
+src_compile() {
+	lndirs
+	cd ${B}
+	mkdir -p build
+	cygjavac -d build $(find classes -name *.java)
+	cygjar cf ${ORIG_PN}.jar -C build com
+	cygjavadoc -d docs -sourcepath classes -package com.sun.image.codec.jpeg -link ${JAVADOC_DIR}/classpath
+}
+
+src_install() {
+	cd ${B}
+	dojar ${ORIG_PN}.jar
+	dojavadoc docs
+}
